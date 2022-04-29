@@ -16,3 +16,9 @@ public static class Settings
     throw new KeyNotFoundException($"Property named '{Property}' was not found!");
   }
 }
+
+public static class ServerContext
+{
+  public static string ReadPath = Settings.FindProperty("path");
+  public static string[] ReadDirectory = Directory.GetFiles(ReadPath);
+}
