@@ -1,9 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "9ayfJ7J+ElHIbQLajIbfp3lsVTEOwVBd3aHTpmgQYqaxAjoe0gKFNJgKzqz8lkW61UOeSsiZArRwloCC00bP+g==",
+  "dgSpecHash": "LFT5nRYVND5ukxyXM+NxmBIPO6vXz3c+/tTFcrsL4qmooozliTNaknelGpRCj+Q/peocqtwZ7egt4bywKXre1w==",
   "success": true,
   "projectFilePath": "/home/arthur/Projects/FServ/FServ.csproj",
   "expectedPackageFiles": [
+    "/home/arthur/.nuget/packages/anglesharp/0.16.1/anglesharp.0.16.1.nupkg.sha512",
+    "/home/arthur/.nuget/packages/anglesharp.css/0.16.4/anglesharp.css.0.16.4.nupkg.sha512",
+    "/home/arthur/.nuget/packages/htmlsanitizer/7.1.488/htmlsanitizer.7.1.488.nupkg.sha512",
     "/home/arthur/.nuget/packages/microsoft.extensions.configuration/6.0.0/microsoft.extensions.configuration.6.0.0.nupkg.sha512",
     "/home/arthur/.nuget/packages/microsoft.extensions.configuration.abstractions/6.0.0/microsoft.extensions.configuration.abstractions.6.0.0.nupkg.sha512",
     "/home/arthur/.nuget/packages/microsoft.extensions.configuration.binder/6.0.0/microsoft.extensions.configuration.binder.6.0.0.nupkg.sha512",
@@ -29,13 +32,15 @@
     "/home/arthur/.nuget/packages/microsoft.extensions.options/6.0.0/microsoft.extensions.options.6.0.0.nupkg.sha512",
     "/home/arthur/.nuget/packages/microsoft.extensions.options.configurationextensions/6.0.0/microsoft.extensions.options.configurationextensions.6.0.0.nupkg.sha512",
     "/home/arthur/.nuget/packages/microsoft.extensions.primitives/6.0.0/microsoft.extensions.primitives.6.0.0.nupkg.sha512",
+    "/home/arthur/.nuget/packages/microsoft.netcore.platforms/5.0.0/microsoft.netcore.platforms.5.0.0.nupkg.sha512",
+    "/home/arthur/.nuget/packages/system.buffers/4.5.1/system.buffers.4.5.1.nupkg.sha512",
     "/home/arthur/.nuget/packages/system.diagnostics.diagnosticsource/6.0.0/system.diagnostics.diagnosticsource.6.0.0.nupkg.sha512",
     "/home/arthur/.nuget/packages/system.diagnostics.eventlog/6.0.0/system.diagnostics.eventlog.6.0.0.nupkg.sha512",
     "/home/arthur/.nuget/packages/system.runtime.compilerservices.unsafe/6.0.0/system.runtime.compilerservices.unsafe.6.0.0.nupkg.sha512",
+    "/home/arthur/.nuget/packages/system.text.encoding.codepages/5.0.0/system.text.encoding.codepages.5.0.0.nupkg.sha512",
     "/home/arthur/.nuget/packages/system.text.encodings.web/6.0.0/system.text.encodings.web.6.0.0.nupkg.sha512",
     "/home/arthur/.nuget/packages/system.text.json/6.0.0/system.text.json.6.0.0.nupkg.sha512",
-    "/home/arthur/.nuget/packages/microsoft.aspnetcore.app.ref/6.0.2/microsoft.aspnetcore.app.ref.6.0.2.nupkg.sha512",
-    "/home/arthur/.nuget/packages/microsoft.netcore.app.host.linux-x64/6.0.2/microsoft.netcore.app.host.linux-x64.6.0.2.nupkg.sha512"
+    "/home/arthur/.nuget/packages/microsoft.aspnetcore.app.ref/6.0.2/microsoft.aspnetcore.app.ref.6.0.2.nupkg.sha512"
   ],
   "logs": []
 }

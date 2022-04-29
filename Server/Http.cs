@@ -1,4 +1,7 @@
 using System.Net;
+using System.Web;
+using System.Text;
+using Ganss.XSS;
 using FServ.Global;
 
 namespace FServ.Server;
@@ -7,31 +10,22 @@ public static class HttpServer
 {
   private static HttpListener Listener = new HttpListener();
 
-
-
-
   public static void Host(string URI)
   {
-    if (!HttpListener.IsSupported)
-    {
-      Console.WriteLine("HttpListener is not supported on this host!");
-      return;
-    }
-
     Listener.Prefixes.Add("http://*:8080/");
     Listener.Start();
 
     HttpListenerContext context = Listener.GetContext();
-
-    HttpListenerRequest request = context.Request;
+    HttpListenerResponse response = context.Response;
 
     if (context.Request.RawUrl == "/")
     {
-      HttpListenerResponse response = context.Response;
+      HtmlDocument html = new HtmlDocument();
 
-      string responseString = $"<html><body>{ServerContext.ReadDirectory.First().Split("/").Last()}</body></html>";
+      foreach (string file in ServerContext.ReadDirectory)
+        html.AddElement("h4", file.Split("/").Last());
 
-      byte[] buffer = System.Text.Encoding.UTF8.GetBytes(responseString);
+      byte[] buffer = html.GetBuffer();
 
       response.ContentLength64 = buffer.Length;
 
@@ -44,5 +38,28 @@ public static class HttpServer
     Listener.Stop();
 
     HttpServer.Host(URI);
+  }
+}
+
+public class HtmlDocument
+{
+  private string Content = "<html> <head></head> <body>";
+
+  public void AddElement(string element, string innerContent)
+  {
+    string contentInsideTag = HttpUtility.HtmlDecode(innerContent);
+
+    Content += $"<{element}>{contentInsideTag}</{element}>";
+  }
+
+  public byte[] GetBuffer()
+  {
+    Content += $"</body></html>";
+
+    string sanitizedContent = new HtmlSanitizer().Sanitize(Content);
+
+    byte[] buffer = Encoding.UTF8.GetBytes(sanitizedContent);
+
+    return buffer;
   }
 }
