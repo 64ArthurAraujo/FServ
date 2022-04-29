@@ -4,9 +4,11 @@ namespace FServ;
 
 public class Worker : BackgroundService
 {
-  private KeyValuePair<string, string> ReadPath = Settings.FindProperty("path");
+  private static string ReadPath = Settings.FindProperty("path");
 
-  private KeyValuePair<string, string> UpdateRate = Settings.FindProperty("update-rate");
+  private static string UpdateRate = Settings.FindProperty("update-rate");
+
+  private string[] ReadDirectory = Directory.GetFiles(ReadPath);
 
   private readonly ILogger<Worker> Logger;
 
@@ -22,8 +24,9 @@ public class Worker : BackgroundService
     while (!stoppingToken.IsCancellationRequested)
     {
       Logger.LogInformation("Updating directory...");
+      ReadDirectory = Directory.GetFiles(ReadPath);
 
-      await Task.Delay(int.Parse(UpdateRate.Value), stoppingToken);
+      await Task.Delay(int.Parse(UpdateRate), stoppingToken);
     }
   }
 }
