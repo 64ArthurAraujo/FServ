@@ -1,20 +1,29 @@
+using FServ.Global;
+
 namespace FServ;
 
 public class Worker : BackgroundService
 {
-  private readonly ILogger<Worker> _logger;
+  private KeyValuePair<string, string> ReadPath = Settings.FindProperty("path");
+
+  private KeyValuePair<string, string> UpdateRate = Settings.FindProperty("update-rate");
+
+  private readonly ILogger<Worker> Logger;
 
   public Worker(ILogger<Worker> logger)
   {
-    _logger = logger;
+    Logger = logger;
   }
 
   protected override async Task ExecuteAsync(CancellationToken stoppingToken)
   {
+    Logger.LogInformation("FServ up and running...");
+
     while (!stoppingToken.IsCancellationRequested)
     {
-      _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
-      await Task.Delay(1000, stoppingToken);
+      Logger.LogInformation("Updating directory...");
+
+      await Task.Delay(int.Parse(UpdateRate.Value), stoppingToken);
     }
   }
 }

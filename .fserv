@@ -1,0 +1,10 @@
+# DO NOT LEAVE BLANK LINES IN THIS FILE!
+# THIS WILL PREVENT THE APPLICATIO FROM
+# READING FURTHER FILE SETTINGS
+#
+#
+# Path to read the files from
+path=/home/arthur/
+#
+# Speed in ms which the FServ will fetch new files
+update-rate=1000
