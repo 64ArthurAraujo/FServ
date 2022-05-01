@@ -20,5 +20,16 @@ public static class Settings
 public static class ServerContext
 {
   public static string ReadPath = Settings.FindProperty("path");
+
   public static string[] ReadDirectory = Directory.GetFiles(ReadPath);
+
+  public static bool ExistsInDirectory(string fileToFind)
+  {
+    string filename = fileToFind.Replace("/", "");
+
+    foreach (string file in ReadDirectory)
+      if (file == ReadPath + filename) return true;
+
+    return false;
+  }
 }

@@ -1,7 +1,6 @@
+#pragma warning disable CS8604
+
 using System.Net;
-using System.Web;
-using System.Text;
-using Ganss.XSS;
 using FServ.Global;
 
 namespace FServ.Server;
@@ -27,12 +26,16 @@ public static class HttpServer
 
       byte[] buffer = html.GetBuffer();
 
-      response.ContentLength64 = buffer.Length;
+      Http.Respond(response, buffer);
+    }
+    else if (ServerContext.ExistsInDirectory(context.Request.RawUrl))
+    {
+      Console.WriteLine("tru");
+      // todo automatically remove the last / in the .fserv file
+      byte[] requestedFileBuffer =
+        File.ReadAllBytes(ServerContext.ReadPath + context.Request.RawUrl?.Replace("/", ""));
 
-      Stream output = response.OutputStream;
-
-      output.Write(buffer, 0, buffer.Length);
-      output.Close();
+      Http.RespondWithFile(response, requestedFileBuffer);
     }
 
     Listener.Stop();
@@ -41,25 +44,23 @@ public static class HttpServer
   }
 }
 
-public class HtmlDocument
+public static class Http
 {
-  private string Content = "<html> <head></head> <body>";
-
-  public void AddElement(string element, string innerContent)
+  public static void Respond(HttpListenerResponse response, byte[] buffer)
   {
-    string contentInsideTag = HttpUtility.HtmlDecode(innerContent);
+    response.ContentLength64 = buffer.Length;
 
-    Content += $"<{element}>{contentInsideTag}</{element}>";
+    Stream output = response.OutputStream;
+
+    output.Write(buffer, 0, buffer.Length);
+
+    output.Close();
   }
 
-  public byte[] GetBuffer()
+  public static void RespondWithFile(HttpListenerResponse response, byte[] buffer)
   {
-    Content += $"</body></html>";
+    response.AddHeader("Content-Type", "application/octet-stream");
 
-    string sanitizedContent = new HtmlSanitizer().Sanitize(Content);
-
-    byte[] buffer = Encoding.UTF8.GetBytes(sanitizedContent);
-
-    return buffer;
+    Http.Respond(response, buffer);
   }
 }
