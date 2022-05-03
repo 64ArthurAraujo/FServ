@@ -6,20 +6,27 @@ namespace FServ.Server;
 
 public class HtmlDocument
 {
-  private string Content = "<html> <head></head> <body>";
+  private static string StyleURL = "https://raw.githack.com/64ArthurAraujo/FServ/main/style.css";
+
+  private static string StyleImport = $"<link rel=\"stylesheet\" href=\"{StyleURL}\">";
+
+  private string Content = $"<html> <head>{StyleImport}</head> <body>";
 
   public void AddElement(string element, string innerContent)
   {
-    string contentInsideTag = HttpUtility.HtmlDecode(innerContent);
+    string contentInTag = HttpUtility.HtmlDecode(innerContent);
 
-    Content += $"<{element}>{contentInsideTag}</{element}>";
+    Content += $"<{element}>{contentInTag}</{element}>";
   }
 
   public byte[] GetBuffer()
   {
     Content += $"</body></html>";
 
-    string sanitizedContent = new HtmlSanitizer().Sanitize(Content);
+    HtmlSanitizer sanitizer = new HtmlSanitizer();
+    sanitizer.AllowedTags.Add("link");
+
+    string sanitizedContent = sanitizer.Sanitize(Content);
 
     byte[] buffer = Encoding.UTF8.GetBytes(sanitizedContent);
 

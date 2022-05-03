@@ -19,28 +19,41 @@ public static class HttpServer
 
     if (context.Request.RawUrl == "/")
     {
-      HtmlDocument html = new HtmlDocument();
-
-      foreach (string file in ServerContext.ReadDirectory)
-        html.AddElement("h4", file.Split("/").Last());
-
-      byte[] buffer = html.GetBuffer();
-
-      Http.Respond(response, buffer);
+      RespondWithRootDirectory(response);
     }
-    else if (ServerContext.ExistsInDirectory(context.Request.RawUrl))
+    else if (ServerFolder.ExistsInDirectory(context.Request.RawUrl))
     {
-      Console.WriteLine("tru");
-      // todo automatically remove the last / in the .fserv file
-      byte[] requestedFileBuffer =
-        File.ReadAllBytes(ServerContext.ReadPath + context.Request.RawUrl?.Replace("/", ""));
-
-      Http.RespondWithFile(response, requestedFileBuffer);
+      RespondWithFile(context, response);
     }
 
     Listener.Stop();
 
     HttpServer.Host(URI);
+  }
+
+  private static void RespondWithFile(HttpListenerContext context, HttpListenerResponse response)
+  {
+    // todo automatically remove the last / in the .fserv file
+    byte[] requestedFileBuffer =
+      File.ReadAllBytes(ServerFolder.ReadPath + context.Request.RawUrl?.Replace("/", ""));
+
+    Http.RespondWithFile(response, requestedFileBuffer);
+  }
+
+  private static void RespondWithRootDirectory(HttpListenerResponse response)
+  {
+    string GetFilename(string filePath) { return filePath.Split("/").Last(); }
+
+
+    HtmlDocument html = new HtmlDocument();
+
+    foreach (string folder in ServerFolder.RootDirectoryFolders)
+      html.AddElement("h3", GetFilename(folder));
+
+    foreach (string file in ServerFolder.RootDirectoryFiles)
+      html.AddElement("h4", GetFilename(file));
+
+    Http.Respond(response, html.GetBuffer());
   }
 }
 

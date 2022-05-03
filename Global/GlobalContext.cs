@@ -17,19 +17,27 @@ public static class Settings
   }
 }
 
-public static class ServerContext
+public static class ServerFolder
 {
   public static string ReadPath = Settings.FindProperty("path");
 
-  public static string[] ReadDirectory = Directory.GetFiles(ReadPath);
+  public static string[] RootDirectoryFiles = Directory.GetFiles(ReadPath);
+
+  public static string[] RootDirectoryFolders = Directory.GetDirectories(ReadPath);
 
   public static bool ExistsInDirectory(string fileToFind)
   {
     string filename = fileToFind.Replace("/", "");
 
-    foreach (string file in ReadDirectory)
+    foreach (string file in RootDirectoryFiles)
       if (file == ReadPath + filename) return true;
 
     return false;
+  }
+
+  public static void Update()
+  {
+    RootDirectoryFiles = Directory.GetFiles(ReadPath);
+    RootDirectoryFolders = Directory.GetDirectories(ReadPath);
   }
 }

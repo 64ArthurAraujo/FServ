@@ -23,7 +23,8 @@ public class Worker : BackgroundService
     while (!stoppingToken.IsCancellationRequested)
     {
       Logger.LogInformation("Updating directory...");
-      ServerContext.ReadDirectory = Directory.GetFiles(ServerContext.ReadPath);
+
+      ServerFolder.Update();
 
       await Task.Delay(int.Parse(UpdateRate), stoppingToken);
     }

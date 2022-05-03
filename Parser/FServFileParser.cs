@@ -28,20 +28,7 @@ public static class FServFileParser
       if (dotFServFile == null)
         CreateFServFile();
 
-      using (StreamReader sr = File.OpenText(FServFile))
-      {
-        string? line = String.Empty;
-
-        while ((line = sr.ReadLine()) != null)
-        {
-          if (line.StartsWith("#")) continue;
-
-          KeyValuePair<string, string> ParsedLine =
-            new KeyValuePair<string, string>(line.Split("=")[0], line.Split("=")[1]);
-
-          Settings.Add(ParsedLine);
-        }
-      }
+      ParseFServFile();
     }
     catch (Exception e)
     {
@@ -50,6 +37,24 @@ public static class FServFileParser
     }
 
     return Settings;
+  }
+
+  private static void ParseFServFile()
+  {
+    using (StreamReader sr = File.OpenText(FServFile))
+    {
+      string? line = String.Empty;
+
+      while ((line = sr.ReadLine()) != "!!!end!!!")
+      {
+        if (line == null || line.StartsWith("#")) continue;
+
+        KeyValuePair<string, string> ParsedLine =
+          new KeyValuePair<string, string>(line.Split("=")[0], line.Split("=")[1]);
+
+        Settings.Add(ParsedLine);
+      }
+    }
   }
 
   public static void CreateFServFile()
