@@ -2,5 +2,5 @@
 path=/home/arthur/
 # Speed in ms which the FServ will fetch new files
 update-rate=1000
-
-!!!end!!!
+# The name of the file repository
+repo-name=FServ File Repository

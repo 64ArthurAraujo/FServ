@@ -1,6 +1,18 @@
+using System.Runtime.InteropServices;
 using FServ.Parser;
 
 namespace FServ.Global;
+
+public static class ServerSys
+{
+  public static bool IsRunningOnWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
+
+  public static bool IsRunningOnLinux = RuntimeInformation.IsOSPlatform(OSPlatform.Linux);
+
+  public static bool IsRunningOnBSD = RuntimeInformation.IsOSPlatform(OSPlatform.FreeBSD);
+
+  public static bool IsRunningOnOSX = RuntimeInformation.IsOSPlatform(OSPlatform.OSX);
+}
 
 public static class Settings
 {
@@ -25,14 +37,35 @@ public static class ServerFolder
 
   public static string[] RootDirectoryFolders = Directory.GetDirectories(ReadPath);
 
-  public static bool ExistsInDirectory(string fileToFind)
+  public static bool FileExistsInDirectory(string fileToFind, string[]? folderToSearch = null)
   {
-    string filename = fileToFind.Replace("/", "");
+    string filename = fileToFind.Substring(1);
 
-    foreach (string file in RootDirectoryFiles)
+    foreach (string file in folderToSearch ?? RootDirectoryFiles)
+    {
       if (file == ReadPath + filename) return true;
+    }
 
     return false;
+  }
+
+  public static bool FolderExistsInDirectory(string folderToFind, string[]? folderToSearch = null)
+  {
+    string filename = folderToFind.Substring(1);
+
+    foreach (string file in folderToSearch ?? RootDirectoryFolders)
+    {
+      if (file == ReadPath + filename) return true;
+    }
+
+    return false;
+  }
+
+  public static string[] GetDirectoryFiles(string directoryPath)
+  {
+    string folderPath = ReadPath + directoryPath.Substring(1);
+
+    return Directory.GetFiles(folderPath);
   }
 
   public static void Update()

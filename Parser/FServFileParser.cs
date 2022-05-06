@@ -1,12 +1,12 @@
-using System.Runtime.InteropServices;
+using FServ.Log;
+using FServ.Global;
 
 namespace FServ.Parser;
 
 public static class FServFileParser
 {
-  private static bool IsRunningOnWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
-
-  private static string FolderPath = IsRunningOnWindows ? @"C:\AppData\fserv\" : "/home/arthur/Projects/FServ/";
+  private static string FolderPath =
+    ServerSys.IsRunningOnWindows ? @"C:\AppData\fserv\" : "/home/arthur/Projects/FServ/";
 
   private static string[] FServFolder = Directory.GetFiles(FolderPath);
 
@@ -16,24 +16,31 @@ public static class FServFileParser
 
   public static List<KeyValuePair<string, string>> Parse()
   {
-    bool FServFolderExists = Directory.Exists(FolderPath);
-
     try
     {
-      if (!FServFolderExists)
+      if (!Directory.Exists(FolderPath))
+      {
         Directory.CreateDirectory(FolderPath);
-
-      string? dotFServFile = Array.Find<string>(FServFolder, file => file.Equals(FServFile));
-
-      if (dotFServFile == null)
         CreateFServFile();
+      }
+      else
+      {
+        string? dotFServFile = Array.Find<string>(FServFolder, file => file.Equals(FServFile));
+
+        if (dotFServFile == null)
+          CreateFServFile();
+      }
 
       ParseFServFile();
     }
+    catch (IndexOutOfRangeException e)
+    {
+      Logger.Issue($"Parsing of the .fserv file failed! This is probably is probably due to blank lines in the file, please remove those lines and try again. \n\n {e} \n\n");
+    }
     catch (Exception e)
     {
-      // lacks admin privileges
-      Console.WriteLine(e);
+      // Probably a user privilege exception.
+      Logger.Issue($"Failed to parse .fserv file! \n\n {e} \n\n");
     }
 
     return Settings;
@@ -41,13 +48,15 @@ public static class FServFileParser
 
   private static void ParseFServFile()
   {
+    Logger.Log("Parsing .fserv file...");
+
     using (StreamReader sr = File.OpenText(FServFile))
     {
       string? line = String.Empty;
 
-      while ((line = sr.ReadLine()) != "!!!end!!!")
+      while ((line = sr.ReadLine()) != null)
       {
-        if (line == null || line.StartsWith("#")) continue;
+        if (line.StartsWith("#")) continue;
 
         KeyValuePair<string, string> ParsedLine =
           new KeyValuePair<string, string>(line.Split("=")[0], line.Split("=")[1]);
@@ -59,12 +68,20 @@ public static class FServFileParser
 
   public static void CreateFServFile()
   {
-    using (StreamWriter sw = File.CreateText(FServFile))
+    Logger.Log("A .fserv file was not found, creating a new one...");
+
+    using (StreamWriter file = File.CreateText(FServFile))
     {
-      if (IsRunningOnWindows)
-        sw.WriteLine(@"path=C:\AppData\fserv\files");
-      else
-        sw.WriteLine(@"path=/home/");
+      if (ServerSys.IsRunningOnWindows)
+      {
+        file.WriteLine(@"path=C:\AppData\fserv\files");
+      }
+      else if (ServerSys.IsRunningOnLinux || ServerSys.IsRunningOnBSD)
+      {
+        file.WriteLine(@"path=/home/");
+      }
+
+      file.WriteLine(@"update-rate=1000");
     }
   }
 }
