@@ -7,13 +7,32 @@
 
 h4,
 h4,
+h2,
 h1,
 h5,
 h3 {
   font-family: 'Red Hat Text', sans-serif;
-  margin-bottom: -5px;
+  margin-bottom: -15px;
+  color: black;
+}
+
+a {
+  text-decoration: none;
+}
+
+img {
+  width: 25px;
+  height: 25px;
+  padding-right: 15px;
+  float: left;
+}
+
+h4 {
+  color: #363636;
+  margin-bottom: -25px;
 }
 
 h1 {
+  margin-top: -5px;
   margin-bottom: 25px;
 }
