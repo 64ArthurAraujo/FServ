@@ -7,33 +7,26 @@ namespace FServ.Server;
 
 public class HtmlDocument
 {
-  private static string StyleURL = "https://rawcdn.githack.com/64ArthurAraujo/FServ/31e9b113d07119f9a5210a8c8b32f7522fe219b8/style.css";
-
-  private static string StyleImport = $"<link rel=\"stylesheet\" href=\"{StyleURL}\">";
-
-  private static string FolderImageURL = "https://rawcdn.githack.com/64ArthurAraujo/FServ/84235fa18afe283fd414fd5828fe82dfa4ab1d82/icons/folders.png";
-
   private static string RepositoryName = Settings.FindProperty("repo-name");
 
   private string Content =
-    $"<html> <head>{StyleImport}</head> <body> <img src=\"{FolderImageURL}\"><h1>{RepositoryName}</h1>";
+    $"<html> <head>{HtmlProperties.StyleImport}</head> <body> <img src=\"{HtmlProperties.FolderImageURL}\"><h1>{RepositoryName}</h1>";
 
   public static void SetRepositoryName(string name)
   {
-    name = HttpUtility.HtmlDecode(name);
-
-    RepositoryName = name;
+    RepositoryName = HttpUtility.HtmlDecode(name);
   }
 
   public void AddElement(string element, string innerContent, bool isLink = true)
   {
-    string contentInTag = HttpUtility.HtmlDecode(innerContent);
+    innerContent = HttpUtility.HtmlDecode(innerContent);
 
     if (isLink)
-      Content += $"<a href=\"/{contentInTag}\"><{element}>{contentInTag}</{element}></a>";
+      Content += $"<a href=\"/{innerContent}\"><{element}>{innerContent}</{element}></a>";
     else
-      Content += $"<{element}>{contentInTag}</{element}>";
+      Content += $"<{element}>{innerContent}</{element}>";
   }
+
   public byte[] GetBuffer()
   {
     Content += $"</body></html>";
@@ -47,4 +40,13 @@ public class HtmlDocument
 
     return buffer;
   }
+}
+
+public class HtmlProperties
+{
+  public static string StyleURL = "https://rawcdn.githack.com/64ArthurAraujo/FServ/31e9b113d07119f9a5210a8c8b32f7522fe219b8/style.css";
+
+  public static string StyleImport = $"<link rel=\"stylesheet\" href=\"{StyleURL}\">";
+
+  public static string FolderImageURL = "https://rawcdn.githack.com/64ArthurAraujo/FServ/84235fa18afe283fd414fd5828fe82dfa4ab1d82/icons/folders.png";
 }
