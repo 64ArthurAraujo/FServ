@@ -35,7 +35,6 @@ public static class HttpServer
       DownloadFile(requestFilePath, response);
     }
 
-
     Listener.Stop();
 
     HttpServer.Host(name);
