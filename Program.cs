@@ -7,7 +7,7 @@ IHost host = Host.CreateDefaultBuilder(args)
     {
       if (ServerSys.IsRunningOnOSX)
       {
-        Logger.Issue("Unsupported Platform");
+        Logger.Issue("Unsupported Platform", new PlatformNotSupportedException());
       }
       else
       {

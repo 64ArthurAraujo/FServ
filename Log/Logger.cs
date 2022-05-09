@@ -16,11 +16,11 @@ public static class Logger
     Console.WriteLine($"[{LogType.WARNING}] ({currentTime})     {contentToLog}");
   }
 
-  public static void Issue(string contentToLog)
+  public static void Issue(string contentToLog, Exception err)
   {
     string currentTime = DateTime.Now.ToString("HH:mm:ss");
 
-    Console.WriteLine($"[{LogType.ISSUE}]  ({currentTime})      {contentToLog}");
+    Console.WriteLine($"[{LogType.ISSUE}]  ({currentTime})      {contentToLog} \n\n {err} \n\n");
   }
 
   public enum LogType

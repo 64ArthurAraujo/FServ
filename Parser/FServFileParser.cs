@@ -35,12 +35,12 @@ public static class FServFileParser
     }
     catch (IndexOutOfRangeException e)
     {
-      Logger.Issue($"Parsing of the .fserv file failed! This is probably is probably due to blank lines in the file, please remove those lines and try again. \n\n {e} \n\n");
+      Logger.Issue($"Parsing of the .fserv file failed! This is probably is probably due to blank lines in the file, please remove those lines and try again.", e);
     }
     catch (Exception e)
     {
       // Probably a user privilege exception.
-      Logger.Issue($"Failed to parse .fserv file! \n\n {e} \n\n");
+      Logger.Issue($"Failed to parse .fserv file!", e);
     }
 
     return Settings;
@@ -72,6 +72,7 @@ public static class FServFileParser
 
     using (StreamWriter file = File.CreateText(FServFile))
     {
+      file.WriteLine("# Path to read the files from");
       if (ServerSys.IsRunningOnWindows)
       {
         file.WriteLine(@"path=C:\AppData\fserv\files");
@@ -81,7 +82,11 @@ public static class FServFileParser
         file.WriteLine(@"path=/home/");
       }
 
+      file.WriteLine("# Speed in ms which the FServ will fetch new files");
       file.WriteLine(@"update-rate=1000");
+
+      file.WriteLine("# The name of the file repository");
+      file.WriteLine(@"repo-name=FServ File Repository");
     }
   }
 }
