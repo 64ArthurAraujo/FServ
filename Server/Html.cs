@@ -56,7 +56,7 @@ public class HtmlDocument
 
 public class HtmlProperties
 {
-  public static string StyleURL = "https://rawcdn.githack.com/64ArthurAraujo/FServ/31e9b113d07119f9a5210a8c8b32f7522fe219b8/style.css";
+  public static string StyleURL = "https://rawcdn.githack.com/64ArthurAraujo/FServ/6f12f4b8fab409f7fbfdb9e6e3f8e59813058320/style.css";
 
   public static string StyleImport = $"<link rel=\"stylesheet\" href=\"{StyleURL}\">";
 
