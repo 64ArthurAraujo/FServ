@@ -76,10 +76,31 @@ public static class HttpServer
     HtmlDocument html = new HtmlDocument();
 
     foreach (string folder in Directory.GetDirectories(dirPath))
+    {
+      DateTime folderChangedDate = Directory.GetLastWriteTime(folder);
+
+      html.OpenDiv();
+
       html.AddElement("h3", GetFilename(folder));
+      html.AddElement("h6", folderChangedDate.ToString("dd/MM/yy HH:mm:ss"), false);
+      html.AddElement("h6", "Type: folder", false);
+
+      html.CloseDiv();
+    }
 
     foreach (string file in Directory.GetFiles(dirPath))
+    {
+      DateTime fileChangedDate = Directory.GetLastWriteTime(file);
+
+      html.OpenDiv();
+
       html.AddElement("h4", GetFilename(file));
+      html.AddElement("h6", fileChangedDate.ToString("dd/MM/yy HH:mm:ss"), false);
+      html.AddElement("h6", $"Type: file", false);
+      html.AddElement("h6 class=\"size-indicator\"", $"Size: {file.Length} bytes", false);
+
+      html.CloseDiv();
+    }
 
     Http.Respond(response, html.GetBuffer());
   }

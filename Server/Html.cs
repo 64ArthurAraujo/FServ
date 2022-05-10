@@ -10,7 +10,7 @@ public class HtmlDocument
   private static string RepositoryName = Settings.FindProperty("repo-name");
 
   private string Content =
-    $"<html> <head>{HtmlProperties.StyleImport}</head> <body> <img src=\"{HtmlProperties.FolderImageURL}\"><h1>{RepositoryName}</h1>";
+    $"<html> <head>{HtmlProperties.StyleImport} <title>{RepositoryName}</title></head> <body> <img src=\"{HtmlProperties.FolderImageURL}\"><h1>{RepositoryName}</h1>";
 
   public static void SetRepositoryName(string name)
   {
@@ -27,12 +27,24 @@ public class HtmlDocument
       Content += $"<{element}>{innerContent}</{element}>";
   }
 
+  public void OpenDiv()
+  {
+    Content += "<div>";
+  }
+
+  public void CloseDiv()
+  {
+    Content += "</div>";
+  }
+
   public byte[] GetBuffer()
   {
     Content += $"</body></html>";
 
     HtmlSanitizer sanitizer = new HtmlSanitizer();
+
     sanitizer.AllowedTags.Add("link");
+    sanitizer.AllowedTags.Add("title");
 
     string sanitizedContent = sanitizer.Sanitize(Content);
 
