@@ -1,5 +1,5 @@
 # Path to read the files from
-path=/home/arthur/
+path=/etc/fserv/repo-files/
 # Speed in ms which the FServ will fetch new files
 update-rate=1000
 # The name of the file repository

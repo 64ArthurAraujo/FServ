@@ -6,7 +6,7 @@ namespace FServ.Parser;
 public static class FServFileParser
 {
   private static string FolderPath =
-    ServerSys.IsRunningOnWindows ? @"C:\AppData\fserv\" : "/home/arthur/Projects/FServ/";
+    ServerSys.IsRunningOnWindows ? @"C:\AppData\fserv\" : "/etc/fserv/";
 
   private static string[] FServFolder = Directory.GetFiles(FolderPath);
 
@@ -79,7 +79,7 @@ public static class FServFileParser
       }
       else if (ServerSys.IsRunningOnLinux || ServerSys.IsRunningOnBSD)
       {
-        file.WriteLine(@"path=/home/");
+        file.WriteLine(@"path=/etc/fserv/repo-files/");
       }
 
       file.WriteLine("# Speed in ms which the FServ will fetch new files");
